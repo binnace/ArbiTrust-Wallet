@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArbiTrust | Pro Wallet & DEX</title>
+    <title>ArbiTrust | Wallet & DEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { background-color: #030712; color: #f3f4f6; font-family: 'Inter', sans-serif; }
         .arb-card { background: linear-gradient(180deg, #111827 0%, #030712 100%); border: 1px solid #1f2937; border-radius: 28px; }
-        .swap-input { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 20px; padding: 20px; transition: 0.3s; }
-        .swap-input:focus-within { border-color: #3b82f6; background-color: #111827; }
+        .swap-input { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 20px; padding: 20px; }
         .btn-blue { background: linear-gradient(90deg, #2563eb, #3b82f6); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         .hidden { display: none; }
     </style>
@@ -26,18 +25,15 @@
         <button id="connectBtn" onclick="connectWallet()" class="btn-blue px-5 py-2.5 rounded-full text-[10px] font-bold text-white uppercase tracking-widest transition-all">Connect Wallet</button>
     </div>
 
-    <div id="walletPage" class="w-full max-w-md animate-in fade-in duration-500">
+    <div id="walletPage" class="w-full max-w-md">
         <div class="arb-card p-8 shadow-2xl mb-8">
             <p class="text-gray-500 text-[10px] font-bold uppercase text-center mb-2 tracking-[0.2em]">Available Balance</p>
-            <h2 id="busdBalanceHeader" class="text-5xl font-extrabold text-center mb-12 tracking-tight text-white">$0.00</h2>
+            <h2 id="busdBalanceHeader" class="text-3xl font-extrabold text-center mb-12 tracking-tight text-white">$0.00</h2>
 
-            <div class="grid grid-cols-3 gap-6 mb-12 text-center">
-                <div class="cursor-not-allowed opacity-30"><div class="text-2xl mb-2">📤</div><span class="text-[9px] font-black uppercase tracking-widest">Send</span></div>
-                <div class="cursor-not-allowed opacity-30"><div class="text-2xl mb-2">📥</div><span class="text-[9px] font-black uppercase tracking-widest">Receive</span></div>
-                <div class="cursor-pointer group" onclick="showPage('swap')">
-                    <div class="text-2xl mb-2 group-hover:scale-110 transition-transform text-blue-500">🔄</div>
-                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-500">Swap</span>
-                </div>
+            <div class="grid grid-cols-3 gap-6 mb-12 text-center text-gray-500 font-bold text-[9px] uppercase tracking-widest">
+                <div class="opacity-30"><div class="text-2xl mb-2">📤</div>SEND</div>
+                <div class="opacity-30"><div class="text-2xl mb-2">📥</div>RECEIVE</div>
+                <div class="cursor-pointer text-blue-500" onclick="showPage('swap')"><div class="text-2xl mb-2">🔄</div>SWAP</div>
             </div>
 
             <div class="space-y-4">
@@ -53,49 +49,39 @@
         </div>
     </div>
 
-    <div id="swapPage" class="w-full max-w-md hidden animate-in slide-in-from-bottom-4 duration-300">
+    <div id="swapPage" class="w-full max-w-md hidden">
         <div class="arb-card p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-8 px-2">
-                <h2 class="text-xl font-extrabold tracking-tight">Swap Assets</h2>
-                <button onclick="showPage('wallet')" class="text-gray-500 hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
+                <h2 class="text-xl font-extrabold tracking-tight">Swap</h2>
+                <button onclick="showPage('wallet')" class="text-gray-500 text-xl">✕</button>
             </div>
 
             <div class="swap-input mb-2">
                 <div class="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
-                    <span>Pay With</span>
+                    <span>From</span>
                     <span>Balance: <span id="swapBalance" class="text-gray-300 font-black">0.00</span></span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <input type="number" id="fromAmount" oninput="calculateSwap()" placeholder="0.0" class="bg-transparent text-3xl font-black outline-none w-1/2 text-white placeholder-gray-800">
-                    <div class="flex items-center gap-2 bg-gray-800/80 px-4 py-2 rounded-2xl border border-gray-700">
-                        <div class="bg-yellow-500 w-5 h-5 rounded-full"></div>
-                        <span class="font-bold text-sm">BUSD</span>
+                    <input type="number" id="fromAmount" oninput="calculateSwap()" placeholder="0.0" class="bg-transparent text-3xl font-black outline-none w-1/2 text-white">
+                    <div class="flex items-center gap-2 bg-gray-800/80 px-4 py-2 rounded-2xl border border-gray-700 font-bold text-sm">
+                        <div class="bg-yellow-500 w-4 h-4 rounded-full"></div> BUSD
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-center -my-4 z-10 relative">
-                <div class="bg-gray-900 border-4 border-[#030712] w-10 h-10 rounded-xl flex items-center justify-center text-blue-500 shadow-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-                </div>
-            </div>
+            <div class="flex justify-center -my-4 z-10 relative"><div class="bg-gray-900 border-4 border-[#030712] w-10 h-10 rounded-xl flex items-center justify-center text-blue-500 shadow-xl">↓</div></div>
 
             <div class="swap-input mb-8">
-                <div class="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
-                    <span>Receive</span>
-                </div>
+                <div class="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4"><span>To</span></div>
                 <div class="flex justify-between items-center">
-                    <input type="number" id="toAmount" readonly placeholder="0.0" class="bg-transparent text-3xl font-black outline-none w-1/2 text-gray-600 placeholder-gray-800">
-                    <div class="flex items-center gap-2 bg-blue-600/20 px-4 py-2 rounded-2xl border border-blue-500/30">
-                        <div class="bg-blue-500 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black text-white">E</div>
-                        <span class="font-bold text-sm text-blue-400">ETH</span>
+                    <input type="number" id="toAmount" readonly placeholder="0.0" class="bg-transparent text-3xl font-black outline-none w-1/2 text-gray-600">
+                    <div class="flex items-center gap-2 bg-blue-600/20 px-4 py-2 rounded-2xl border border-blue-500/30 font-bold text-sm text-blue-400">
+                        <div class="bg-blue-500 w-4 h-4 rounded-full"></div> ETH
                     </div>
                 </div>
             </div>
 
-            <button onclick="executeSwap()" class="btn-blue w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] text-white shadow-2xl hover:scale-[1.02] active:scale-95 transition-all">Execute Swap</button>
+            <button onclick="executeSwap()" class="btn-blue w-full py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] text-white shadow-2xl">Execute Swap</button>
         </div>
     </div>
 
@@ -117,31 +103,38 @@
                 document.getElementById('connectBtn').innerText = account.substring(0,6) + "..." + account.substring(38);
                 document.getElementById('connectBtn').classList.replace('btn-blue', 'bg-green-600');
                 updateBalances();
-            } else { alert("Open in Trust Wallet Browser!"); }
+            } else { alert("Use Trust Wallet/MetaMask Browser!"); }
         }
 
         async function updateBalances() {
             const busdContract = new ethers.Contract(BUSD_ADDRESS, ABI, provider);
             const balance = await busdContract.balanceOf(account);
             const formatted = ethers.formatUnits(balance, 18);
-            const display = parseFloat(formatted).toLocaleString(undefined, {minimumFractionDigits: 2});
-            document.getElementById('busdBalanceHeader').innerText = "$" + display;
-            document.getElementById('busdBalanceList').innerText = display;
-            document.getElementById('swapBalance').innerText = display;
+            
+            let displayHeader;
+            let displayList = parseFloat(formatted).toLocaleString(undefined, {minimumFractionDigits: 2});
+
+            // Smart Formatting: If more than 1 Million, show $10.00M style
+            if (parseFloat(formatted) >= 1000000) {
+                displayHeader = "$" + (parseFloat(formatted) / 1000000).toFixed(2) + "M";
+            } else {
+                displayHeader = "$" + displayList;
+            }
+
+            document.getElementById('busdBalanceHeader').innerText = displayHeader;
+            document.getElementById('busdBalanceList').innerText = displayList;
+            document.getElementById('swapBalance').innerText = displayList;
         }
 
         function calculateSwap() {
             const amount = document.getElementById('fromAmount').value;
-            // Simple logic for UI: 1 ETH = 3500 BUSD (Example)
             if(amount > 0) {
-                document.getElementById('toAmount').value = (amount / 3500).toFixed(6);
-            } else {
-                document.getElementById('toAmount').value = "";
-            }
+                document.getElementById('toAmount').value = (amount / 3500).toFixed(6); // Example rate
+            } else { document.getElementById('toAmount').value = ""; }
         }
 
         function executeSwap() {
-            alert("Routing to Arbitrum Liquidity Pool... Please wait for Kal (Tomorrow) for Contract Integration!");
+            alert("Routing to Liquidity Pool... Integration tomorrow!");
         }
     </script>
 </body>
